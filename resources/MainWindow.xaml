@@ -1,0 +1,515 @@
+<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Name="Window" WindowStartupLocation = "CenterScreen"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    Width = "1366" Height = "800" ShowInTaskbar = "True">
+   <Window.Resources>
+        <Geometry x:Key="expandIcon">F1 M 19,19L 57,19L 57,57L 19,57L 19,19 Z M 54,54L 54,22.0001L 22,22.0001L 22,54L 54,54 Z M 41,24.0001L 41,52L 24,52L 24,40L 33.6666,40L 30,45L 34,45L 39,38L 34,31L 30,31L 33.6666,36L 24,36L 24,24L 41,24.0001 Z</Geometry>
+        <Geometry x:Key="collapseIcon">F1 M 57,19L 19,19L 19,57L 57,57L 57,19 Z M 22,54L 22,22.0001L 54,22.0001L 54,54L 22,54 Z M 24,24.0001L 24,52L 41,52L 40.9999,40L 31.3333,40L 35,45L 31,45L 26,38L 31,31L 35,31L 31.3333,36L 40.9999,36L 41,24L 24,24.0001 Z</Geometry>
+        <Geometry x:Key="exportIcon">F1 M 42,24L 57,24L 57,52L 42,52L 42,50L 47,50L 47,46L 42,46L 42,45L 47,45L 47,41L 42,41L 42,40L 47,40L 47,36L 42,36L 42,35L 47,35L 47,31L 42,31L 42,30L 47,30L 47,26L 42,26L 42,24 Z M 54.9995,50.0005L 54.9997,46.0003L 47.9995,46.0003L 47.9995,50.0005L 54.9995,50.0005 Z M 54.9996,41.0004L 47.9995,41.0004L 47.9995,45.0003L 54.9997,45.0003L 54.9996,41.0004 Z M 54.9996,36.0004L 47.9995,36.0004L 47.9995,40.0004L 54.9996,40.0004L 54.9996,36.0004 Z M 54.9996,31.0004L 47.9995,31.0004L 47.9995,35.0004L 54.9996,35.0004L 54.9996,31.0004 Z M 54.9995,26.0005L 47.9995,26.0005L 47.9995,30.0004L 54.9996,30.0004L 54.9995,26.0005 Z M 18.9997,23.7503L 40.9994,19.7506L 40.9994,56.2506L 18.9997,52.2503L 18.9997,23.7503 Z M 34.6404,44.5147L 31.3367,37.4084L 34.5522,30.4699L 31.9399,30.5805L 30.2234,34.6963L 30.0162,35.3903L 29.8872,35.8892L 29.8596,35.8895C 29.4574,34.1248 28.7481,32.4436 28.1318,30.7417L 25.2803,30.8624L 28.2549,37.4637L 24.997,44.0621L 27.7904,44.1932L 29.5296,39.8757L 29.7578,38.9297L 29.7876,38.93C 30.2317,40.8236 31.1236,42.5844 31.861,44.3843L 34.6404,44.5147 Z</Geometry>
+        <Geometry x:Key="computerIcon">M6,2C4.89,2 4,2.89 4,4V12C4,13.11 4.89,14 6,14H18C19.11,14 20,13.11 20,12V4C20,2.89 19.11,2 18,2H6M6,4H18V12H6V4M4,15C2.89,15 2,15.89 2,17V20C2,21.11 2.89,22 4,22H20C21.11,22 22,21.11 22,20V17C22,15.89 21.11,15 20,15H4M8,17H20V20H8V17M9,17.75V19.25H13V17.75H9M15,17.75V19.25H19V17.75H15Z</Geometry>
+        <Geometry x:Key="userIcon">M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z</Geometry>
+        <Geometry x:Key="enabledIcon">M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z</Geometry>
+        <Geometry x:Key="disabledIcon">M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z</Geometry>
+        <Geometry x:Key="arrowsIcon">M13,11H18L16.5,9.5L17.92,8.08L21.84,12L17.92,15.92L16.5,14.5L18,13H13V18L14.5,16.5L15.92,17.92L12,21.84L8.08,17.92L9.5,16.5L11,18V13H6L7.5,14.5L6.08,15.92L2.16,12L6.08,8.08L7.5,9.5L6,11H11V6L9.5,7.5L8.08,6.08L12,2.16L15.92,6.08L14.5,7.5L13,6V11Z</Geometry>
+        <Geometry x:Key="folderIcon">M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z</Geometry>
+        <Geometry x:Key="openFolderIcon">M19,20H4C2.89,20 2,19.1 2,18V6C2,4.89 2.89,4 4,4H10L12,6H19A2,2 0 0,1 21,8H21L4,8V18L6.14,10H23.21L20.93,18.5C20.7,19.37 19.92,20 19,20Z</Geometry>
+        <Geometry x:Key="searchIcon">M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z</Geometry>
+        <Geometry x:Key="treeIcon">M3,3H9V7H3V3M15,10H21V14H15V10M15,17H21V21H15V17M13,13H7V18H13V20H7L5,20V9H7V11H13V13Z</Geometry>
+        <Geometry x:Key="editIcon">M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.08 20.21,11.08 20.42,11.3L21.7,12.58C21.92,12.79 21.92,13.14 21.7,13.35M12,18.94L18.07,12.88L20.12,14.93L14.06,21H12V18.94M4,2H18A2,2 0 0,1 20,4V8.17L16.17,12H12V16.17L10.17,18H4A2,2 0 0,1 2,16V4A2,2 0 0,1 4,2M4,6V10H10V6H4M12,6V10H18V6H12M4,12V16H10V12H4Z</Geometry>
+        <Geometry x:Key="consoleIcon">M20,19V7H4V19H20M20,3A2,2 0 0,1 22,5V19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19V5C2,3.89 2.9,3 4,3H20M13,17V15H18V17H13M9.58,13L5.57,9H8.4L11.7,12.3C12.09,12.69 12.09,13.33 11.7,13.72L8.42,17H5.59L9.58,13Z</Geometry>
+        <Geometry x:Key="overviewIcon">M21,11H13V3A8,8 0 0,1 21,11M19,13C19,15.78 17.58,18.23 15.43,19.67L11.58,13H19M11,21C8.22,21 5.77,19.58 4.33,17.43L10.82,13.68L14.56,20.17C13.5,20.7 12.28,21 11,21M3,13A8,8 0 0,1 11,5V12.42L3.83,16.56C3.3,15.5 3,14.28 3,13Z</Geometry>
+        <Geometry x:Key="reloadIcon">M19,12H22.32L17.37,16.95L12.42,12H16.97C17,10.46 16.42,8.93 15.24,7.75C12.9,5.41 9.1,5.41 6.76,7.75C4.42,10.09 4.42,13.9 6.76,16.24C8.6,18.08 11.36,18.47 13.58,17.41L15.05,18.88C12,20.69 8,20.29 5.34,17.65C2.22,14.53 2.23,9.47 5.35,6.35C8.5,3.22 13.53,3.21 16.66,6.34C18.22,7.9 19,9.95 19,12Z</Geometry>
+        <Geometry x:Key="groupIcon">M8,8V12H13V8H8M1,1H5V2H19V1H23V5H22V19H23V23H19V22H5V23H1V19H2V5H1V1M5,19V20H19V19H20V5H19V4H5V5H4V19H5M6,6H15V10H18V18H8V14H6V6M15,14H10V16H16V12H15V14Z</Geometry>
+        <Geometry x:Key="sourceIcon">M18,15H16V17H18M18,11H16V13H18M20,19H12V17H14V15H12V13H14V11H12V9H20M10,7H8V5H10M10,11H8V9H10M10,15H8V13H10M10,19H8V17H10M6,7H4V5H6M6,11H4V9H6M6,15H4V13H6M6,19H4V17H6M12,7V3H2V21H22V7H12Z</Geometry>
+        <Geometry x:Key="settingsIcon">M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z</Geometry>
+        <Geometry x:Key="infoIcon">M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z</Geometry>
+        <SolidColorBrush x:Key="iconColor">#336699</SolidColorBrush>
+
+        <sys:Double x:Key="FontSize">13</sys:Double>
+        <sys:Double x:Key="ButtonSize">28</sys:Double>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="{StaticResource FontSize}" />
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="{StaticResource FontSize}" />
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
+        </Style>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
+        </Style>
+         <Style TargetType="DataGridRow">
+            <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
+        </Style>
+
+        <Style TargetType="{x:Type TreeViewItem}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Path Name="pathExpandCollapse" Margin="1" Stretch="Uniform" Fill="{StaticResource iconColor}">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
+                                                <Setter Property="Data" Value="{StaticResource openFolderIcon}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="False">
+                                                <Setter Property="Data" Value="{StaticResource folderIcon}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                            <TextBlock Text="{Binding}" FontSize="{StaticResource FontSize}" Margin="5,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition>
+                <!--Sidebar-->
+                <ColumnDefinition.Style>
+                    <Style TargetType="ColumnDefinition">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=btnExpandCollapseSideBar, Path=IsChecked}" Value="True">
+                                <Setter Property="MaxWidth" Value="0"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=btnExpandCollapseSideBar, Path=IsChecked}" Value="False">
+                                <Setter Property="Width" Value="Auto"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
+
+            <ColumnDefinition>
+                <!--Gridsplitter-->
+                <ColumnDefinition.Style>
+                    <Style TargetType="ColumnDefinition">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=btnExpandCollapseSideBar, Path=IsChecked}" Value="True">
+                                <Setter Property="MaxWidth" Value="0"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=btnExpandCollapseSideBar, Path=IsChecked}" Value="False">
+                                <Setter Property="Width" Value="5"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
+
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="1" Grid.Column="0" Name="grdSidebar" MinWidth="350" Margin="2,0,4,0">
+            <TabControl>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Path Stretch="Uniform" Fill="{StaticResource iconColor}"  Data="{StaticResource sourceIcon}"/>
+                            <TextBlock VerticalAlignment="Center" Text="Source" Margin="4,0,0,0"/>
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <TabControl>
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Stretch="Uniform" Fill="{StaticResource iconColor}"  Data="{StaticResource treeIcon}"/>
+                                    <TextBlock VerticalAlignment="Center" Text="Organizational Units" Margin="4,0,0,0"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <Grid>
+
+                               <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Margin="0,0,0,2" Name="txtOUFilter"/>
+
+                                    <Button Grid.Column="1" Height="25" Width="25" Name="btnFilterOUs" ToolTip="Search Organizational Units" Background="Transparent" Margin="2,0,0,2">
+                                        <Path Margin="2" Stretch="Uniform" Fill="{StaticResource iconColor}" Data="{StaticResource searchIcon}"/>
+                                    </Button>
+
+                                    <Button Grid.Column="2" Height="25" Width="25" Name="btnReloadOUs" ToolTip="Reload Organizational Units" Background="Transparent" Margin="2,0,0,2">
+                                        <Path Margin="2" Stretch="Uniform" Fill="{StaticResource iconColor}" Data="{StaticResource reloadIcon}"/>
+                                    </Button>
+
+                                    <CheckBox Grid.Column="3" Name="chkRecursiveOUSearch" IsChecked="True" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="Recurse" Margin="2,0,0,2"/>
+                                </Grid>
+
+                                <Separator Grid.Row="1" Margin="-2,0,-2,0"/>
+
+                                <TreeView Grid.Row="2" Name="tvOUBrowser" BorderThickness="0" Margin="0,2,0,0"/>
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Stretch="Uniform" Fill="{StaticResource iconColor}"  Data="{StaticResource groupIcon}"/>
+                                    <TextBlock VerticalAlignment="Center" Text="Groups" Margin="4,0,0,0"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Grid.Column="0" Margin="0,0,0,2" Name="txtGroupFilter"/>
+
+                                    <Button Grid.Column="1" Height="25" Width="25" Name="btnFilterGroups" ToolTip="Search groups" Background="Transparent" Margin="2,0,0,2">
+                                        <Path Margin="2" Stretch="Uniform" Fill="{StaticResource iconColor}" Data="{StaticResource searchIcon}"/>
+                                    </Button>
+
+                                    <Button Grid.Column="2" Height="25" Width="25" Name="btnReloadGroups" ToolTip="Reload groups" Background="Transparent" Margin="2,0,0,2">
+                                        <Path Margin="2" Stretch="Uniform" Fill="{StaticResource iconColor}" Data="{StaticResource reloadIcon}"/>
+                                    </Button>
+
+                                    <CheckBox Grid.Column="3" Name="chkRecursiveGroupSearch" IsChecked="True" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="Recurse" Margin="2,0,0,2"/>
+                                </Grid>
+
+                                <Separator Grid.Row="1" Margin="-2,0,-2,0"/>
+
+                                <ListBox Grid.Row="2" Name="lstBoxGroups" BorderThickness="0" Margin="0,2,0,0">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Path Stretch="Uniform" Fill="{StaticResource iconColor}" Data="{StaticResource groupIcon}"/>
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Path=Name}" Margin="5,0" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Path Stretch="Uniform" Fill="{StaticResource iconColor}"  Data="{StaticResource editIcon}"/>
+                            <TextBlock VerticalAlignment="Center" Text="Edit" Margin="4,0,0,0"/>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <Grid>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <Grid>
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=tabItemComputers, Path=IsSelected}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=tabItemComputers, Path=IsSelected}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=computersDataGrid, Path=SelectedIndex}" Value="-1">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Margin="2,5,0,5" Grid.Row="0" Orientation="Horizontal">
+                                        <Path Stretch="Uniform" Fill="{StaticResource iconColor}"  Data="{StaticResource computerIcon}"/>
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=computersDataGrid, Path=SelectedItem.Name}" Margin="4,0,0,0"/>
+                                    </StackPanel>
+
+                                    <Expander Grid.Row="1" IsExpanded="True" Header="Editable attributes">
+                                        <Grid Margin="5,5,5,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Grid.Row="0" Orientation="Vertical" Name="stkEditableComputerAttributes"/>
+                                            <Button Grid.Row="2" Name="btnCommitComputerChanges" Content="Commit changes" Background="Transparent"/>
+                                        </Grid>
+                                    </Expander>
+
+                                    <Expander Grid.Row="2" Margin="0,5,0,0" IsExpanded="True" Header="Read-Only attributes">
+                                        <Grid Margin="0,5,0,0">
+                                            <StackPanel Name="stkComputerDetailsPane" Orientation="Vertical"/>
+                                        </Grid>
+                                    </Expander>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=tabItemUsers, Path=IsSelected}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=tabItemUsers, Path=IsSelected}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=usersDataGrid, Path=SelectedIndex}" Value="-1">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Margin="2,5,0,5" Grid.Row="0" Orientation="Horizontal">
+                                        <Path Stretch="Uniform" Fill="{StaticResource iconColor}"  Data="{StaticResource userIcon}"/>
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=usersDataGrid, Path=SelectedItem.Name}" Margin="4,0,0,0"/>
+                                    </StackPanel>
+
+                                    <Expander Grid.Row="1" IsExpanded="True" Header="Editable attributes">
+                                        <Grid Margin="0,5,0,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Grid.Row="0" Orientation="Vertical" Name="stkEditableUserAttributes"/>
+                                            <Button Grid.Row="2" Name="btnCommitUserChanges" Content="Commit changes" Background="Transparent"/>
+                                        </Grid>
+                                    </Expander>
+
+                                    <Expander Grid.Row="2" Margin="0,5,0,0" IsExpanded="True" Header="Read-Only attributes">
+                                        <Grid Margin="0,5,0,0">
+                                            <StackPanel Name="stkUserDetailsPane" Orientation="Vertical"/>
+                                        </Grid>
+                                    </Expander>
+                                </Grid>
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+        <GridSplitter Name="grdSplitter" Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="0" Grid.Column="2" Name="grdButtonBar">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+
+                <ToggleButton Height="{StaticResource ButtonSize}" Width="{StaticResource ButtonSize}" Grid.Row="0" Grid.Column="1" Name="btnExpandCollapseSideBar" Background="Transparent" Margin="0,0,0,2">
+                    <Path Name="pathExpandCollapse" Margin="1" Stretch="Uniform" Fill="{StaticResource iconColor}">
+                        <Path.Style>
+                            <Style TargetType="Path">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=btnExpandCollapseSideBar, Path=IsChecked}" Value="False">
+                                        <Setter Property="Data" Value="{StaticResource collapseIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=btnExpandCollapseSideBar, Path=IsChecked}" Value="True">
+                                        <Setter Property="Data" Value="{StaticResource expandIcon}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+                </ToggleButton>
+
+                <TextBlock Text="Filter:" VerticalAlignment="Center" Margin="2,0"/>
+
+                <TextBox Name="txtFilter" Width="200" VerticalContentAlignment="Center" Margin="0,0,0,2" />
+
+                <Button Height="{StaticResource ButtonSize}" Width="{StaticResource ButtonSize}" Name="btnFilter" ToolTip="Load / Refresh objects" Background="Transparent" Margin="2,0,0,2">
+                    <Path Margin="2" Stretch="Uniform" Fill="{StaticResource iconColor}" Data="{StaticResource searchIcon}"/>
+                </Button>
+
+                <Button Height="{StaticResource ButtonSize}" Width="{StaticResource ButtonSize}" ToolTip="Export to CSV" Name="btnExportData" Background="Transparent" Margin="2,0,0,2">
+                    <Path Margin="2" Stretch="Uniform" Fill="Green" Data="{StaticResource exportIcon}"/>
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                <Button Height="{StaticResource ButtonSize}" Width="{StaticResource ButtonSize}" ToolTip="Retire object" Name="btnSettings" Background="Transparent" Margin="2,0,0,2">
+                    <Path Margin="2" Stretch="Uniform" Fill="{StaticResource iconColor}" Data="{StaticResource settingsIcon}"/>
+                </Button>
+
+                <ToggleButton Height="{StaticResource ButtonSize}" Width="{StaticResource ButtonSize}" HorizontalAlignment="Right" ToolTip="Show/Hide console" IsChecked="True" Name="btnShowHideConsole" Background="Transparent" Margin="2,0,2,2">
+                    <Path Margin="2" Stretch="Uniform" Fill="{StaticResource iconColor}" Data="{StaticResource consoleIcon}"/>
+                </ToggleButton>
+            </StackPanel>
+
+            <!-- DATAGRID COLUMN -->
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TabControl Grid.Row="1" Name="tabControlDataGrids">
+                    <TabItem Name="tabItemComputers">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Stretch="Uniform" Fill="{StaticResource iconColor}"  Data="{StaticResource computerIcon}"/>
+                                <TextBlock VerticalAlignment="Center" Text=" Computers"/>
+                                <TextBlock VerticalAlignment="Center" Text=" ["/>
+                                <TextBlock VerticalAlignment="Center" Name="txtTotalComputerCount" ToolTip="Total computers"/>
+                                <TextBlock VerticalAlignment="Center" Text="/"/>
+                                <TextBlock VerticalAlignment="Center" Name="txtActiveComputerCount" Foreground="Green" ToolTip="Active computers"/>
+                                <TextBlock VerticalAlignment="Center" Text="/"/>
+                                <TextBlock VerticalAlignment="Center" Name="txtPassiveComputerCount" Foreground="Red" ToolTip="Passive computers"/>
+                                <TextBlock VerticalAlignment="Center" Text="]"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <DataGrid Grid.Row="0" Name="computersDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" SelectionMode="Single">
+                                <DataGrid.RowHeaderTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Height="10" Width="10" Margin="0,0,2,0" Stretch="Uniform">
+                                                <Path.Style>
+                                                    <Style TargetType="Path">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Enabled}" Value="True">
+                                                                <Setter Property="Data" Value="{StaticResource enabledIcon}"/>
+                                                                <Setter Property="Fill" Value="Green"/>
+                                                                <Setter Property="ToolTip" Value="Enabled"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Enabled}" Value="False">
+                                                                <Setter Property="Data" Value="{StaticResource disabledIcon}"/>
+                                                                <Setter Property="Fill" Value="Red"/>
+                                                                <Setter Property="ToolTip" Value="Disabled"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Path.Style>
+                                            </Path>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGrid.RowHeaderTemplate>
+                                <DataGrid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Name="ctxRDP" Header="Connect with Remote Desktop (RDP)"/>
+                                        <MenuItem Name="ctxMSRA" Header="Offer remote assistance (MSRA)"/>
+                                    </ContextMenu>
+                                </DataGrid.ContextMenu>
+                            </DataGrid>
+                            <Grid Grid.Row="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Selected object CN:"/>
+                                    <TextBlock Text="{Binding ElementName=computersDataGrid, Path=SelectedItem.Name}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock Text="Selected object DN:"/>
+                                    <TextBlock Text="{Binding ElementName=computersDataGrid, Path=SelectedItem.DistinguishedName}" TextWrapping="WrapWithOverFlow"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Name="tabItemUsers">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Stretch="Uniform" Fill="{StaticResource iconColor}"  Data="{StaticResource userIcon}"/>
+                                <TextBlock VerticalAlignment="Center" Text=" Users"/>
+                                <TextBlock VerticalAlignment="Center" Text=" ["/>
+                                <TextBlock VerticalAlignment="Center" Name="txtTotalUserCount" ToolTip="Active users"/>
+                                <TextBlock VerticalAlignment="Center" Text="/"/>
+                                <TextBlock VerticalAlignment="Center" Name="txtActiveUserCount" Foreground="Green" ToolTip="Active users"/>
+                                <TextBlock VerticalAlignment="Center" Text="/"/>
+                                <TextBlock VerticalAlignment="Center" Name="txtPassiveUserCount" Foreground="Red" ToolTip="Passive users"/>
+                                <TextBlock VerticalAlignment="Center" Text="]"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <DataGrid Grid.Row="0" Name="usersDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" SelectionMode="Single">
+                                <DataGrid.RowHeaderTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Height="10" Width="10" Margin="0,0,2,0" Stretch="Uniform">
+                                                <Path.Style>
+                                                    <Style TargetType="Path">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Enabled}" Value="True">
+                                                                <Setter Property="Data" Value="{StaticResource enabledIcon}"/>
+                                                                <Setter Property="Fill" Value="Green"/>
+                                                                <Setter Property="ToolTip" Value="Enabled"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Enabled}" Value="False">
+                                                                <Setter Property="Data" Value="{StaticResource disabledIcon}"/>
+                                                                <Setter Property="Fill" Value="Red"/>
+                                                                <Setter Property="ToolTip" Value="Disabled"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Path.Style>
+                                            </Path>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGrid.RowHeaderTemplate>
+                            </DataGrid>
+                            <Grid Grid.Row="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Selected object CN:"/>
+                                    <TextBlock Text="{Binding ElementName=usersDataGrid, Path=SelectedItem.Name}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock Text="Selected object DN:"/>
+                                    <TextBlock Text="{Binding ElementName=usersDataGrid, Path=SelectedItem.DistinguishedName}" TextWrapping="WrapWithOverFlow"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
