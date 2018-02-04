@@ -28,7 +28,20 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="100"/>
             <ColumnDefinition Width="Auto" MinWidth="100"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition>
+                <ColumnDefinition.Style>
+                    <Style TargetType="ColumnDefinition">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=rdBtnXLSX, Path=IsChecked}" Value="True">
+                                <Setter Property="Width" Value="Auto"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=rdBtnXLSX, Path=IsChecked}" Value="False">
+                                <Setter Property="Width" Value="0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -58,7 +71,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBlock Grid.Column="1" Grid.Row="0" Text="Sort by column" Margin="5,0,0,0"/>
+        <TextBlock Grid.Column="1" Grid.Row="0" Text="Sort by" Margin="5,0,0,0"/>
         <ListBox Grid.Column="1" Grid.Row="1" Width="{Binding ElementName=lstBoxColumnsToInclude, Path=ActualWidth}" ItemsSource="{Binding ElementName=lstBoxColumnsToInclude, Path=SelectedItems}" MinHeight="150" MinWidth="150" SelectionMode="Single" Name="lstBoxSortBy" Margin="5">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -69,10 +82,46 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" Margin="5,0,0,0">
-            <TextBlock Text="Separator: "/>
-            <TextBox Text=";" Width="20" VerticalContentAlignment="Center" Name="txtBoxDelimiter"/>
+        <TextBlock Grid.Column="2" Grid.Row="0" Text="Group by" Margin="5,0,0,0"/>
+        <ListBox Grid.Column="2" Grid.Row="1" Width="{Binding ElementName=lstBoxColumnsToInclude, Path=ActualWidth}" ItemsSource="{Binding ElementName=lstBoxColumnsToInclude, Path=SelectedItems}" MinHeight="150" MinWidth="150" SelectionMode="Single" Name="lstBoxGroupBy" Margin="5">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FriendlyName}" Tag="{Binding}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Orientation="Vertical" Margin="5,0,0,0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Format: "/>
+                <StackPanel Orientation="Vertical">
+
+                    <RadioButton IsChecked="True" Content="XLSX" Name="rdBtnXLSX"/>
+                    <RadioButton IsChecked="False" Name="rdBtnCSV">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="CSV"/>
+                              <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=rdBtnCSV, Path=IsChecked}" Value="False">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                    </StackPanel.Style>
+                                <TextBlock Text="   Separator: "/>
+                                <TextBox Text=";" Width="20" VerticalContentAlignment="Center" Name="txtBoxDelimiter"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </RadioButton>
+
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
+
         <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="Ok" Name="btnOk" Margin="5" Height="{StaticResource ButtonSize}" MinWidth="60">
                 <Button.Style>

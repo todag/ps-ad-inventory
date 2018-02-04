@@ -40,7 +40,7 @@
 ###############################################################################
 
 Set-StrictMode -Version 2.0
-$script:appVersion = "AD Inventory - V0.4 (c) 2017 todag"
+$script:appVersion = "AD Inventory - V0.5 (c) 2018 todag"
 
 #Set some preference variables (these will be overridden after settingsfile has been read...-)
 $ErrorActionPreference = "Continue"

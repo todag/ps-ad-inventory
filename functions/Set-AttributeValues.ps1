@@ -71,7 +71,7 @@ function Set-AttributeValues
         }
 
         $verboseStr = ("[" + $TargetObject.Name + "] Attribute [" + $attr.Attribute + "]").PadRight(54)
-        if((!$existingValue -and $newValue) -or ($existingValue -and !$newValue) -or ($existingValue -and $newValue -and (Compare-Object $newValue $existingValue)))
+        if((!$existingValue -and $newValue) -or ($existingValue -and !$newValue) -or ($existingValue -and $newValue -and (Compare-Object -CaseSensitive $newValue $existingValue)))
         {
             if($newValue -eq $null)
             {
