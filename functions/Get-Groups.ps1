@@ -13,7 +13,7 @@ function Get-Groups()
         [parameter(Mandatory=$false)]
         [string]$SearchString
     )
-    Write-Verbose "Loading Groups..."
+    Write-Log -LogString "Loading Groups..." -Severity "Informational"
     $startTime = (Get-Date)
     try
     {
@@ -27,12 +27,12 @@ function Get-Groups()
             $result = @(Get-ADGroup -Filter { Name -like $filter } | Sort-Object Name)
         }
 
-        Write-Verbose ($result.Count.ToString() + " groups found in " + ((Get-Date) - $startTime).TotalSeconds + " seconds")
+        Write-Log -LogString ($result.Count.ToString() + " groups found in " + ((Get-Date) - $startTime).TotalSeconds + " seconds") -Severity "Informational"
         return ,$result
     }
     catch
     {
-        Write-Error $_.Exception.Message
+        Write-Log -LogString $_.Exception.Message -Severity "Critical"
     }
 
 }

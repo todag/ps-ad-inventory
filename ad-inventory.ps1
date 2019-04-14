@@ -1,6 +1,6 @@
 ﻿# MIT License
 #
-# Copyright (c) 2017 https://github.com/todag
+# Copyright (c) 2019 https://github.com/todag
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -31,40 +31,35 @@
 #
 #.NOTES
 #
-#    Version:        0.4
+#    Version:        0.6
 #
 #    Author:         <https://github.com/todag>
 #
-#    Creation Date:  <2017-12-27>
+#    Creation Date:  <2019-04-14>
+#              0.5:  <2017-12-27>
 #
 ###############################################################################
 
 Set-StrictMode -Version 2.0
-$script:appVersion = "AD Inventory - V0.5 (c) 2018 todag"
-
-#Set some preference variables (these will be overridden after settingsfile has been read...-)
-$ErrorActionPreference = "Continue"
-$InformationPreference = "Continue"
-$VerbosePreference = "Continue"
-$DebugPreference = "SilentlyContinue"
-
+$script:appVersion = "AD Inventory - V0.6 (c) 2019 todag"
+Write-Host $script:appVersion
 #region DotSource (Don't remove this region, used by merge-project.ps1)
-Write-Verbose "Dot sourcing functions in .\functions..."
+Write-Host "Dot sourcing functions in .\functions..."
 
 #
 # DotSource all files in .\functions
 #
 Get-ChildItem -Path .\functions -Filter *.ps1 | ForEach-Object {
-    Write-Verbose("Dot sourcing function: " + $_.Name)
+    Write-Host ("Dot sourcing function: " + $_.Name)
     . $_.FullName
 }
-Write-Verbose "Dot sourcing classes in .\classes..."
+Write-Log -LogString "Dot sourcing classes in .\classes..." -Severity "Debug"
 
 #
 # DotSource all files in .\classes
 #
 Get-ChildItem -Path .\classes -Filter *.ps1 | ForEach-Object {
-    Write-Verbose("Dot sourcing class: " + $_.Name)
+    Write-Log -LogString ("Dot sourcing class: " + $_.Name) -Severity "Debug"
     . $_.FullName
 }
 #endregion
@@ -76,6 +71,8 @@ Get-ChildItem -Path .\classes -Filter *.ps1 | ForEach-Object {
 [xml]$script:xamlMainWindow = Get-Content -Path .\resources\MainWindow.xaml
 [xml]$script:xamlSettingsWindow = Get-Content -Path .\resources\SettingsWindow.xaml
 [xml]$script:xamlExportWindow = Get-Content -Path .\resources\ExportWindow.xaml
+[xml]$script:xamlLapsWindow = Get-Content -Path .\resources\LapsWindow.xaml
+[xml]$script:xamlDebugWindow = Get-Content -Path .\resources\DebugWindow.xaml
 #endregion
 
 #region CSharp (Don't remove this region, used by merge-project.ps1)
@@ -98,6 +95,7 @@ $script:ADPropertyValueCollectionConverter = $null
 $script:msExchRemoteRecipientTypeConverter = $null
 $script:msExchRecipientDisplayTypeConverter = $null
 $script:managedByConverter = $null
+$script:settingsFile = ($env:appdata + "\PS-AD-Inventory\settings.xml")
 
 [Settings]$script:settings = Get-Settings
 # --------------------------------------------------------------------
@@ -109,12 +107,12 @@ Write-Verbose "Importing Active Directory Powershell Module..."
 Import-Module ActiveDirectory -Verbose:$false -ErrorAction SilentlyContinue | Out-Null
 if(!$?)
 {
-    Write-Error "Failed to load ActiveDirectory module! Script will terminate."
+    Write-Log -LogString "Failed to load ActiveDirectory module! Script will terminate." -Severity "Critical"
     Read-Host
     Exit
 }
 
-Write-Verbose "Loading assemblies and converters..."
+Write-Log -LogString "Loading assemblies and converters..." -Severity "Notice"
 try
 {
     Add-Type -AssemblyName PresentationFramework
@@ -130,32 +128,11 @@ try
 }
 catch
 {
-    Write-Error $_.Exception.Message
-    Write-Information "Press enter to exit..."
+    Write-Log -LogString ($_.Exception.Message) -Severity "Critical"
+    Write-Log -LogString "Press enter to exit..." -Severity "Notice"
     Read-Host
     Exit
 }
 
-# Set output levels from settings
-Write-ADIDebug "Setting Output Preferences according to settings"
-if($script:settings.ShowVerboseOutput -eq $true)
-{
-    $VerbosePreference = "Continue"
-}
-else
-{
-    $VerbosePreference = "SilentlyContinue"
-}
-
-if($script:settings.ShowDebugOutput -eq $true)
-{
-    $DebugPreference = "Continue"
-}
-else
-{
-    $DebugPreference = "SilentlyContinue"
-}
-
 Show-MainWindow
-Write-Host "Script has terminated, press enter to exit..."
-Read-Host
+Write-Host "**** Script has terminated... ****"

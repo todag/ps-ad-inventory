@@ -10,6 +10,7 @@ function Show-SettingsWindow
     $settingsWindow = @{}
     $settingsWindow.Window = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $script:xamlSettingsWindow))
     $settingsWindow.Window.Title = "Settings"
+    $style = ($settingsWindow.Window.FindResource("iconColor")).Color = $script:Settings.IconColor
     foreach($guiObject in $xamlSettingsWindow.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]"))
     {
         $settingsWindow.$($guiObject.Name) = $settingsWindow.Window.FindName($guiObject.Name)
@@ -120,13 +121,25 @@ function Show-SettingsWindow
     # Ok button clicked
     #
     $settingsWindow.btnOk.add_Click({
-        Write-Verbose $settings.ComputerAttributeDefinitions[0].FriendlyName
-        Write-Verbose $settingsUnconfirmed.ComputerAttributeDefinitions[0].FriendlyName
+        Write-Log -LogString $settings.ComputerAttributeDefinitions[0].FriendlyName -Severity "Informational"
+        Write-Log -LogString $settingsUnconfirmed.ComputerAttributeDefinitions[0].FriendlyName -Severity "Informational"
 
         if(Resolve-AttributeDefinitionsFromSchema -ComputerAttributeDefinitions $settingsUnconfirmed.ComputerAttributeDefinitions -UserAttributeDefinitions $settingsUnconfirmed.UserAttributeDefinitions)
         {
             $script:settings = $settingsUnconfirmed
-            Export-Clixml -Path .\settings.xml -InputObject $script:settings
+            
+            Write-Log -LogString ("Checking if settings folder [" + ($script:settingsFile.Substring(0, $script:settingsFile.LastIndexOf("\")) + "\") + "] exists") -Severity "Debug"
+            if(!(Test-Path -Path ($script:settingsFile.Substring(0, $script:settingsFile.LastIndexOf("\")) + "\")))
+            {
+                Write-Log -LogString ("Settings folder did not exist, creating it...") -Severity "Debug"
+                New-Item -ItemType Directory -Path ($script:settingsFile.Substring(0, $script:settingsFile.LastIndexOf("\")) + "\")
+            }
+            Write-Log -LogString ("Settings folder already exists") -Severity "Debug"
+
+            #Write-Host ("Split: " + $script:settingsFile.Substring(0, $script:settingsFile.LastIndexOf("\")))
+            
+            
+            Export-Clixml -Path $script:settingsFile -InputObject $script:settings
             $settingsWindow.Window.Close()
         }
     })

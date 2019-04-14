@@ -42,7 +42,7 @@ function Set-AttributeValues
     }
     else
     {
-        Write-Error "Cannot commit, unknown target type"
+        Write-Log -LogString "Cannot commit, unknown target type" -Severity "Critical"
         [System.Windows.MessageBox]::Show("Cannot commit, unknown target type", "Error",'Ok','Error') | Out-Null
         return
     }
@@ -75,12 +75,12 @@ function Set-AttributeValues
         {
             if($newValue -eq $null)
             {
-                Write-Verbose($verboseStr + " pending action [clear]")
+                Write-Log -LogString ($verboseStr + " pending action [clear]") -Severity "Notice"
                 $commitCount++
             }
             else
             {
-                Write-Verbose($verboseStr + " pending action [new value]")
+                Write-Log -LogString ($verboseStr + " pending action [new value]") -Severity "Notice"
                 $commitCount++
             }
             $TargetObject.($attr.Attribute) = $newValue
@@ -88,7 +88,7 @@ function Set-AttributeValues
         }
         else
         {
-            Write-Verbose($verboseStr + " pending action [no changes]")
+            Write-Log -LogString ($verboseStr + " pending action [no changes]") -Severity "Notice"
         }
     }
 
@@ -106,18 +106,16 @@ function Set-AttributeValues
                 Set-ADUser -Instance $TargetObject
                 $script:MainWindow.usersDataGrid.Items.Refresh()
             }
-            Write-Verbose("[" + $TargetObject.Name + "] " + $commitCount.ToString() + " change(s) commited...")
+            Write-Log -LogString ("[" + $TargetObject.Name + "] " + $commitCount.ToString() + " change(s) commited...") -Severity "Notice"
         }
         catch
         {
-            Write-Error $_.Exception.Message
+            Write-Log -LogString $_.Exception.Message -Severity "Critical"
             [System.Windows.MessageBox]::Show($_.Exception.Message, "Exception",'Ok','Error') | Out-Null
         }
     }
     else
     {
-        Write-Verbose("[" + $TargetObject.Name + "] " + $commitCount.ToString() + " change(s) commited...")
-    }
-
-    Write-Verbose("---------------------------------------------------------------------------------------")
+        Write-Log -LogString ("[" + $TargetObject.Name + "] " + $commitCount.ToString() + " change(s) commited...") -Severity "Notice"
+    }    
 }

@@ -53,7 +53,7 @@ function Resolve-AttributeDefinitionsFromSchema
                 #Check if Single or MultiValue
                 if($attrDef.Attribute -eq "description")
                 {
-                    Write-ADIDebug("[" + $ObjectCategory + "] '" + $attrDef.Attribute + "' setting as SingleValued <--- *** DEFINITION CHANGED ***")
+                    Write-Log -LogString ("[" + $ObjectCategory + "] '" + $attrDef.Attribute + "' setting as SingleValued <--- *** DEFINITION CHANGED ***") -Severity "Debug"
                     $attrDef.IsSingleValued = $true
                 }
                 else
@@ -68,31 +68,31 @@ function Resolve-AttributeDefinitionsFromSchema
                 if($attrDef.Syntax -ne "DirectoryString" -and $attrDef.IsEditable -eq $true)
                 {
                     $attrDef.IsEditable = $false
-                    Write-ADIDebug("[" + $ObjectCategory + "] '" + $attrDef.Attribute +  "' Syntax:" + $attrDef.Syntax + " setting as Read-Only <--- *** DEFINITION CHANGED ***")
+                    Write-Log -LogString ("[" + $ObjectCategory + "] '" + $attrDef.Attribute +  "' Syntax:" + $attrDef.Syntax + " setting as Read-Only <--- *** DEFINITION CHANGED ***") -Severity "Debug"
                 }
             }
             catch
             {
-                Write-Error $_.Exception.Message
+                Write-Log -LogString $_.Exception.Message -Severity "Critical"
                 [System.Windows.MessageBox]::Show("Cannot resolve attribute '" + $attrDef.Attribute + "' from schema. " + $_.Exception.Message, "Error",'Ok','Error') | Out-Null
                 return $false
             }
 
-            Write-ADIDebug("[" + $ObjectCategory + "] '" + $attrDef.Attribute +  "' Syntax:" + $attrDef.Syntax + " IsSingleValued:" + $attrDef.IsSingleValued)
+            Write-Log -LogString ("[" + $ObjectCategory + "] '" + $attrDef.Attribute +  "' Syntax:" + $attrDef.Syntax + " IsSingleValued:" + $attrDef.IsSingleValued) -Severity "Debug"
         }
         return $true
     }
 
     $schema = [DirectoryServices.ActiveDirectory.ActiveDirectorySchema]::GetCurrentSchema()
     $startTime = Get-Date
-    Write-Verbose "Resolving AttributeDefinitions from schema..."
+    Write-Log -LogString "Resolving AttributeDefinitions from schema..." -Severity "Notice"
     $computerResolveResult = Resolve -AttributeDefinition $ComputerAttributeDefinitions -ObjectCategory "computer"
     $userResolveResult = Resolve -AttributeDefinition $UserAttributeDefinitions -ObjectCategory "user"
 
-    Write-ADIDebug ("Computer attributes resolve result:: " + $computerResolveResult.ToString())
-    Write-ADIDebug ("User attributes resolve result: " + $userResolveResult.ToString())
+    Write-Log -LogString ("Computer attributes resolve result:: " + $computerResolveResult.ToString()) -Severity "Debug"
+    Write-Log -LogString ("User attributes resolve result: " + $userResolveResult.ToString()) -Severity "Debug"
 
-    Write-Verbose ("Resolved in " + ((Get-Date) - $startTime).TotalSeconds + " seconds")
+    Write-Log -LogString ("Resolved in " + ((Get-Date) - $startTime).TotalSeconds + " seconds") -Severity "Notice"
 
     if($computerResolveResult -eq $true -and $userResolveResult -eq $true)
     {

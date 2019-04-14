@@ -48,7 +48,7 @@ function Update-DataGridsItemsSources
     }
     else
     {
-        Write-Error "Error, unknown type as SearchBase!"
+        Write-Log -LogString "Error, unknown type as SearchBase!" -Severity "Error"
         return
     }
 
@@ -81,7 +81,7 @@ function Update-DataGridsItemsSources
     $startTime = Get-Date
     try
     {
-        Write-Verbose ("Loading computers from " + $SearchBase.GetType())
+        Write-Log -LogString ("Loading computers from " + $SearchBase.GetType()) -Severity "Informational"
         if($SearchBase.GetType() -eq [Microsoft.ActiveDirectory.Management.ADOrganizationalUnit] -or $SearchBase.GetType() -eq [Microsoft.ActiveDirectory.Management.ADDomain])
         {
             $script:MainWindow.computersDataGrid.ItemsSource = @(Get-ADComputer -LDAPFilter $computerLdapFilter -SearchScope $SearchScope -SearchBase $SearchBase.DistinguishedName -Properties $script:settings.ComputerAttributeDefinitions.Attribute)
@@ -90,11 +90,11 @@ function Update-DataGridsItemsSources
         {
             $script:MainWindow.computersDataGrid.ItemsSource = @(Get-ADComputer -LDAPFilter $computerLdapFilter -Properties $script:settings.ComputerAttributeDefinitions.Attribute)
         }
-        Write-Verbose ($script:MainWindow.computersDataGrid.ItemsSource.Count.ToString() + " found in " + ((Get-Date) - $startTime).TotalSeconds + " seconds")
+        Write-Log -LogString ($script:MainWindow.computersDataGrid.ItemsSource.Count.ToString() + " found in " + ((Get-Date) - $startTime).TotalSeconds + " seconds") -Severity "Informational"
     }
     catch
     {
-        Write-Error $_.Exception.Message
+        Write-Log -LogString $_.Exception.Message -Severity "Error"
         [System.Windows.MessageBox]::Show($_.Exception.Message, "Exception",'Ok','Error')
     }
 
@@ -104,7 +104,7 @@ function Update-DataGridsItemsSources
     $startTime = Get-Date
     try
     {
-        Write-Verbose ("Loading users from " + $SearchBase.GetType())
+        Write-Log -LogString ("Loading users from " + $SearchBase.GetType()) -Severity "Informational"
         [System.Collections.ObjectModel.ObservableCollection[Object]]$usersCollection = New-Object System.Collections.ObjectModel.ObservableCollection[Object]
         if($SearchBase.GetType() -eq [Microsoft.ActiveDirectory.Management.ADOrganizationalUnit] -or $SearchBase.GetType() -eq [Microsoft.ActiveDirectory.Management.ADDomain])
         {
@@ -114,11 +114,11 @@ function Update-DataGridsItemsSources
         {
             $script:MainWindow.usersDataGrid.ItemsSource = @(Get-ADUser -LDAPFilter $userLdapFilter -Properties $script:settings.UserAttributeDefinitions.Attribute)
         }
-        Write-Verbose ($script:MainWindow.usersDataGrid.ItemsSource.Count.ToString() + " found in " + ((Get-Date) - $startTime).TotalSeconds + " seconds")
+        Write-Log -LogString ($script:MainWindow.usersDataGrid.ItemsSource.Count.ToString() + " found in " + ((Get-Date) - $startTime).TotalSeconds + " seconds") -Severity "Informational"
     }
     catch
     {
-        Write-Error $_.Exception.Message
+        Write-Log -LogString $_.Exception.Message -Severity "Error"
         [System.Windows.MessageBox]::Show($_.Exception.Message, "Exception",'Ok','Error')
     }
 

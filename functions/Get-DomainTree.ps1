@@ -37,7 +37,7 @@ function Get-DomainTree
         }
     }
 
-    Write-Verbose "Loading Organizational units..."
+    Write-Log -LogString "Loading Organizational units..." -Severity "Informational"
     $startTime = (Get-Date)
     try
     {
@@ -53,11 +53,11 @@ function Get-DomainTree
         else
         {
             $SearchString = ("*" + $SearchString + "*")
-            Write-Verbose ("Loading Organizational units matching '" + $SearchString + "'")
+            Write-Log -LogString ("Loading Organizational units matching '" + $SearchString + "'") -Severity "Informational"
             foreach($ou in Get-ADOrganizationalUnit -Filter { Name -like $SearchString } )
             {
                 $script:ouCount++
-                Write-ADIDebug ("Found " + $ou.Name)
+                Write-Log -LogString ("Found " + $ou.Name) -Severity "Debug"
                 $treeViewItem = New-Object System.Windows.Controls.TreeViewItem
                 $treeViewItem.Tag = $ou
                 $treeViewItem.Header = $ou.Name
@@ -65,11 +65,11 @@ function Get-DomainTree
             }
             $rootItem.Header = ($rootItem.Header + " (" + $script:ouCount.ToString() + ") search results")
         }
-        Write-Verbose ($script:ouCount.ToString() + " units found in " + ((Get-Date) - $startTime).TotalSeconds + " seconds")
+        Write-Log -LogString ($script:ouCount.ToString() + " units found in " + ((Get-Date) - $startTime).TotalSeconds + " seconds") -Severity "Informational"
     }
     catch
     {
-        Write-Error $_.Exception.Message
+        Write-Log -LogString $_.Exception.Message -Severity "Critical"
     }
     $rootItem.IsExpanded = $true
     return $rootItem

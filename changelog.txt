@@ -1,3 +1,15 @@
+0.6
+NEW: Add LAPS support
+NEW: Added msDS-LastSuccessfulInteractiveLogonTime as FileTimeAttribute
+NEW: Added msDS-LastSuccessfulInteractiveLogonTime as a default attribute for users
+NEW: New console output/logging/debug function
+NEW: Console windows now hidden by default
+NEW: Debugview
+FIX: Check attributedefinitions after reading them from settingsfile
+FIX: Better errorhandling in export function (If Excel Com object cannot be loaded)
+CHANGE: Small changes to merge-project.ps1
+CHANGE: Settingsfile now stored under %appdata%\PS-AD-Inventory\
+
 0.5
 NEW: Excel export option
 FIX: Set-AttributeValues is now case sensitive when comparing existing and new values

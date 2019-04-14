@@ -11,10 +11,11 @@ function Show-MainWindow
 {
     $script:MainWindow.Window = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $script:xamlMainWindow))
     $script:MainWindow.Window.Title = $script:appVersion
+    $style = ($script:MainWindow.Window.FindResource("iconColor")).Color = $script:Settings.IconColor
     foreach($guiObject in $script:xamlMainWindow.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]"))
     {
         $script:MainWindow.$($guiObject.Name) = $script:MainWindow.Window.FindName($guiObject.Name)
-    }
+    }    
 
     #
     # OU Browser TreeViewItem has been selected (or unselected)
@@ -114,17 +115,51 @@ function Show-MainWindow
         {
             if($script:MainWindow.tabItemComputers.IsSelected)
             {
-                Write-ADIDebug "Setting 'computersDataGrid' as DataContext for Button Bar"
+                Write-Log -LogString "Setting 'computersDataGrid' as DataContext for Button Bar" -Severity "Debug"
                 $script:MainWindow.grdButtonBar.DataContext = $script:MainWindow.computersDataGrid
             }
             else
             {
-                Write-ADIDebug "Setting 'usersDataGrid' as DataContext for Button Bar"
+                Write-Log -LogString "Setting 'usersDataGrid' as DataContext for Button Bar" -Severity "Debug"
                 $script:MainWindow.grdButtonBar.DataContext = $script:MainWindow.usersDataGrid
             }
         }
     })
 
+    
+    #
+    # DebugView button clicked. Show Debug Window
+    #
+    $script:MainWindow.btnDebugView.add_Click({
+        if($script:MainWindow.tabItemComputers.IsSelected)
+            {                
+                if($script:MainWindow.computersDataGrid.ItemsSource -ne $null)
+                {
+                    Write-Log -LogString "Showing debug window with ItemsSource from Computers DataGrid" -Severity "Debug"
+                    Show-DebugWindow -ItemsSource $script:MainWindow.computersDataGrid.ItemsSource                
+                }
+                else
+                {
+                    Write-Log -LogString "Computer ItemsSource it empty, no debug data to show!" -Severity "Warning"
+                    [System.Windows.MessageBox]::Show("Computer ItemsSource it empty, no debug data to show!", "Error",'Ok','Error') | Out-Null
+                }
+                
+            }
+            else
+            {
+                if($script:MainWindow.usersDataGrid.ItemsSource -ne $null)
+                {
+                    Write-Log -LogString "Showing debug window with ItemsSource from Users DataGrid" -Severity "Debug"
+                    Show-DebugWindow -ItemsSource $script:MainWindow.usersDataGrid.ItemsSource                
+                }
+                else
+                {
+                    Write-Log -LogString "User ItemsSource it empty, no debug data to show!" -Severity "Warning"
+                    [System.Windows.MessageBox]::Show("User ItemsSource it empty, no debug data to show!", "Error",'Ok','Error') | Out-Null
+                }
+            }        
+    })
+    
     #
     # Settingsbutton clicked. Show Settings Window.
     #
@@ -161,13 +196,18 @@ function Show-MainWindow
         if($script:MainWindow.btnShowHideConsole.IsChecked)
         {
             [Console.Window]::ShowWindow($consolePtr, 1)
-            Write-Verbose "Showing console... Warning! Closing console window will terminate the script. Use togglebutton to hide."
+            Write-Log -LogString "Showing console... *** Warning! *** Closing console window will terminate the script. Use togglebutton to hide it again." -Severity "Warning"
         }
         else
         {
-            Write-Verbose "Hiding console..."
+            Write-Log -LogString "Hiding console..." -Severity "Informational"
             [Console.Window]::ShowWindow($consolePtr, 0)
         }
+    })
+
+    $script:MainWindow.Window.add_Loaded({
+        $consolePtr = [Console.Window]::GetConsoleWindow()
+        [Console.Window]::ShowWindow($consolePtr, 0)
     })
 
     #
@@ -187,7 +227,7 @@ function Show-MainWindow
     #
     # Export button clicked
     #
-    $script:MainWindow.btnExportData.add_Click({
+    $script:MainWindow.btnExportData.add_Click({        
         if($script:MainWindow.tabItemComputers.IsSelected)
         {
             Show-ExportWindow -Source $script:MainWindow.computersDataGrid.ItemsSource -AttributeDefinition $script:settings.ComputerAttributeDefinitions
@@ -200,16 +240,32 @@ function Show-MainWindow
     })
 
     #
+    # Get LAPS password button clicked
+    #
+    $script:MainWindow.btnGetLapsPassword.add_Click({        
+        $hostname = $script:MainWindow.computersDataGrid.SelectedItem.Name
+        $pwd = Get-LapsPassword -Computer $script:MainWindow.computersDataGrid.SelectedItem
+        if($pwd -ne $null)
+        {
+            Show-LapsPassword -Password $pwd -Hostname $hostname
+        }
+        else
+        {
+            Write-Log -LogString "Failed to retrieve LAPS password" -Severity "Notice"
+        }                
+    })
+
+    #
     # RDP ContextMenuItem clicked
     #
     $script:MainWindow.ctxRDP.add_Click({
         if(Get-SelectedObject)
         {
-            Write-Verbose ("Connecting with RDP to [" + (Get-SelectedObject).Name + "]")
+            Write-Log -LogString ("Connecting with RDP to [" + (Get-SelectedObject).Name + "]") -Severity "Notice"
             &mstsc.exe /V: (Get-SelectedObject).Name
         }
 
-    })
+    })    
 
     #
     # MSRA ContextMenuItem clicked
@@ -217,7 +273,7 @@ function Show-MainWindow
     $script:MainWindow.ctxMSRA.add_Click({
         if(Get-SelectedObject)
         {
-            Write-Verbose ("Offering remote assistance to [" + (Get-SelectedObject).Name + "]")
+            Write-Log -LogString ("Offering remote assistance to [" + (Get-SelectedObject).Name + "]") -Severity "Notice"            
             &msra.exe /offerra (Get-SelectedObject).Name
         }
     })

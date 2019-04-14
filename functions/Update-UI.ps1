@@ -40,7 +40,7 @@ Function Update-UI
         {
             $dgColumn = New-Object System.Windows.Controls.DataGridTextColumn
 
-            Write-ADIDebug("Adding binding: "  + $attr.Attribute)
+            Write-Log -LogString ("Adding binding: "  + $attr.Attribute) -Severity "Debug"
             $dgColumn.Binding = New-Object System.Windows.Data.Binding($attr.Attribute)
             $dgColumn.Binding.Mode = [System.Windows.Data.BindingMode]::OneWay
             $dgColumn.Binding.Converter = Get-Converter -AttributeDefinition $attr

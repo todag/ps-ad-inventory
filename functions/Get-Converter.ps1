@@ -27,7 +27,8 @@ function Get-Converter
         "accountExpires",
         "lastLogon",
         "lastPwdSet",
-        "lockoutTime"
+        "lockoutTime",
+        "msDS-LastSuccessfulInteractiveLogonTime"
         )
 
     function Get-ConverterInstance
@@ -41,20 +42,20 @@ function Get-Converter
         )
         if((Get-Variable -Scope Script $Converter).Value -eq $null)
         {
-            Write-ADIDebug ("Instantiating and returning IValueConverter: [" + $Converter + "][" + $AttributeDefinition.Attribute + "]")
+            Write-Log -LogString ("Instantiating and returning IValueConverter: [" + $Converter + "][" + $AttributeDefinition.Attribute + "]") -Severity "Debug"
             (Get-Variable -Scope Script $Converter).Value = New-Object -TypeName $Converter -ArgumentList $Param1
             return (Get-Variable -Scope Script $Converter).Value
         }
         else
         {
-            Write-ADIDebug ("Returning IValueConverter: [" + $Converter + "][" + $AttributeDefinition.Attribute + "]")
+            Write-Log -LogString ("Returning IValueConverter: [" + $Converter + "][" + $AttributeDefinition.Attribute + "]") -Severity "Debug"
             return (Get-Variable -Scope Script $Converter).Value
         }
     }
 
     if($AttributeDefinition.IgnoreConverter)
     {
-        Write-ADIDebug("Ignoring converter for attribute '" + $AttributeDefinition.Attribute + "'")
+        Write-Log -LogString ("Ignoring converter for attribute '" + $AttributeDefinition.Attribute + "'") -Severity "Debug"
         return $null
     }
 

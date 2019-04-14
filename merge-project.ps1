@@ -80,7 +80,21 @@ function Add-XAML
     }
     $script:outputData.Add("`"@")
 
-    #[xml]$script:xamlMainWindow = Get-Content -Path .\resources\MainWindow.xaml
+    Write-Verbose "Adding LapsWindow.xaml"
+    $script:outputData.Add("[xml]`$script:xamllapsWindow = @`"" )
+    foreach($line in (Get-Content -Path .\resources\LapsWindow.xaml))
+    {
+        $script:outputData.Add($line)
+    }
+    $script:outputData.Add("`"@")
+
+    Write-Verbose "Adding DebugWindow.xaml"
+    $script:outputData.Add("[xml]`$script:xamldebugWindow = @`"" )
+    foreach($line in (Get-Content -Path .\resources\DebugWindow.xaml))
+    {
+        $script:outputData.Add($line)
+    }
+    $script:outputData.Add("`"@")    
     $script:outputData.Add("#endregion")
 }
 
@@ -146,12 +160,33 @@ foreach($line in $data)
 #
 # Write $script:outputData to $outputFile
 #
-$script:outputData.Add(("# Merged by user: " + $env:USERNAME))
-$script:outputData.Add(("# On computer:    " + $env:COMPUTERNAME))
-$script:outputData.Add(("# Date:           " + (Get-Date)))
+$script:outputData.Add(("#").PadRight(70,"#") + "#")
+$script:outputData.Add(("#").PadRight(70," ") + "#")
+$script:outputData.Add(("# Merged by user: " + $env:USERNAME).PadRight(70," ") + "#")
+$script:outputData.Add(("# On computer:    " + $env:COMPUTERNAME).PadRight(70," ") + "#")
+$script:outputData.Add(("# Date:           " + (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")).PadRight(70," ") + "#")
+if((Get-ChildItem cert:\CurrentUser\My -codesign).Count -eq 0)
+{
+    $script:outputData.Add(("# No code signing certificate found!").PadRight(70," ") + "#")
+}
+
+# Just for fun, calculate real code lines, exluding empty lines and comments
+$count = 0
+foreach($row in $script:outputData)
+{
+    if(!($row.StartsWith("#")) -and !([string]::IsNullOrWhiteSpace($row)))
+    {
+       $count++
+    }
+}
+$script:outputData.Add(("# LoC: " + $script:outPutData.Count.ToString() + " of which " + $count.ToString() + " is not comments or whitespace").PadRight(70," ") + "#")
+$script:outputData.Add(("#").PadRight(70," ") + "#")
+$script:outputData.Add(("#").PadRight(70,"#") + "#")
 
 Set-Content $outputFile $script:outputData
-Write-Output ("Merged project file created, line count: " + $script:outputData.Count)
+Write-Output ("Merged project file created")
+Write-Output ("Total line count: " + $script:outputData.Count)
+Write-Output ("Code line count: " + $count.ToString())
 
 #
 # Check if code signing certificate exists and ask if merged script should be signed
@@ -173,7 +208,8 @@ if((Get-ChildItem cert:\CurrentUser\My -codesign).Count -gt 0)
 }
 else
 {
-    Write-Output "No code signing certificate found."
+    Write-Output "*** No code signing certificate found! ***"
 }
-
-Write-Output "Merge operations finished. Script terminated."
+Write-Output ("Merged file size: " + (Get-Item $outputFile).Length + " bytes")
+Write-Output "Merge operations finished. Script terminated, press enter to exit session..."
+Read-Host

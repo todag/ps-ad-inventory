@@ -24,36 +24,37 @@ function Get-DefaultAttributeDefinitions
     function Get-DefaultComputerAttributeDefinitions
     {
         $computerAttributes = New-Object System.Collections.Generic.List[AttributeDefinition]
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Name",                "name",                     $false,  "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Company",             "company",                  $true,   "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Division",            "division",                 $true,   "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Department",          "department",               $true,   "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Department Number",   "departmentNumber",         $true,   "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Location",            "location",                 $true,   "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Description",         "description",              $true,   "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Last user",           "info",                     $false,  "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Computer model",      "employeeType",             $false,  "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Operating system",    "operatingSystem",          $false,  "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "OS version",          "operatingSystemVersion",   $false,  "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Last logged on",      "lastLogonTimestamp",       $false,  "DataGrid"))
-        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Created",             "whenCreated",              $false,  "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Name",                "name",                   $false,  "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Company",             "company",                $true,   "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Division",            "division",               $true,   "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Department",          "department",             $true,   "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Department Number",   "departmentNumber",       $true,   "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Location",            "location",               $true,   "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Description",         "description",            $true,   "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Last user",           "info",                   $false,  "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Computer model",      "employeeType",           $false,  "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Operating system",    "operatingSystem",        $false,  "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "OS version",          "operatingSystemVersion", $false,  "DataGrid"))
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Last logged on",      "lastLogonTimestamp",     $false,  "DataGrid"))        
+        $computerAttributes.Add((New-Object AttributeDefinition -ArgumentList "Created",             "whenCreated",            $false,  "DataGrid"))
         return $computerAttributes
     }
 
     function Get-DefaultUserAttributeDefinitions
     {
         $userAttributes = New-Object System.Collections.Generic.List[AttributeDefinition]
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Name",                "name",               $false,  "DataGrid"))
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Company",             "company",            $true,   "DataGrid"))
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Department",          "department",         $true,   "DataGrid"))
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Title",               "title",              $true,   "DataGrid"))
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Description",         "description",        $true,   "DataGrid"))
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Last logged on",      "lastLogonTimestamp", $false,  "DataGrid"))
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "UPN",                 "userPrincipalName",  $false,  "DataGrid"))
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Created",             "whenCreated",        $false,  "DataGrid"))
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Password last set",   "pwdLastSet",         $false,  "DetailsPane"))
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Last bad password",   "badPasswordTime",    $false,  "DetailsPane"))
-        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Bad password count",  "badPwdCount",        $false,  "DetailsPane"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Name",                "name",                                    $false,  "DataGrid"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Company",             "company",                                 $true,   "DataGrid"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Department",          "department",                              $true,   "DataGrid"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Title",               "title",                                   $true,   "DataGrid"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Description",         "description",                             $true,   "DataGrid"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Interactive logon",   "msDS-LastSuccessfulInteractiveLogonTime", $false,  "DataGrid"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Last logged on",      "lastLogonTimestamp",                      $false,  "DataGrid"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "UPN",                 "userPrincipalName",                       $false,  "DataGrid"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Created",             "whenCreated",                             $false,  "DataGrid"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Password last set",   "pwdLastSet",                              $false,  "DetailsPane"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Last bad password",   "badPasswordTime",                         $false,  "DetailsPane"))
+        $userAttributes.Add((New-Object AttributeDefinition -ArgumentList "Bad password count",  "badPwdCount",                             $false,  "DetailsPane"))
         return $userAttributes
     }
 
